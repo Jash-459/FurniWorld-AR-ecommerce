@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  .rating-wrapper {
+    display: flex;
+    flex-direction: row-reverse; /* Reverses the order of stars */
+}
+
+.rating-wrapper input[type="radio"] {
+    display: none; /* Hide the radio buttons */
+}
+
+.rating-wrapper label {
+    cursor: pointer;
+    color: #aaa;
+    font-size: 24px;
+    transition: color 0.2s;
+}
+
+.rating-wrapper input[type="radio"]:checked ~ label {
+    color: #ffcc00; /* Change color of checked stars */
+}
+
+/* Adjustments for aligning the "Your Rating" text */
+.form-group p {
+  margin-bottom: 5px;
+}
+
+/* Adjust alignment of "Your Rating" text */
+.form-group {
+  display: flex;
+  align-items: center;
+}
+</style>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <!-- PRODUCT SLIDER-->
+        <div class="row m-sm-0">
+
+          <div class="col-sm-12 order-1 order-sm-2">
+            <div class="owl-carousel product-slider" data-slider-id="1">
+              {% if product.product_image %}
+              <a class="d-block" href="{{product.product_image.url}}" data-lightbox="product" title="{{product.title}}"><img class="img-fluid" src="{{product.product_image.url}}" alt="{{product.title}}" style="border-radius: 30px;"></a>
+              {% else %}
+              <a class="d-block" href="{% static 'img/product-detail-1.jpg' %}" data-lightbox="product" title="{{product.title}}"><img class="img-fluid" src="{% static 'img/product-detail-1.jpg' %}" alt="{{product.title}}"></a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PRODUCT DETAILS-->
+      <div class="col-lg-6">
+        <ul class="list-inline mb-2">
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+          <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+        </ul>
+        <h1>{{product.title}}</h1>
+        <p class="text-muted lead">₹{{product.price}}</p>
+        <p class="text-small mb-4">{{product.short_description}}</p>
+
+        <div class="row align-items-stretch mb-4">
+
+          <div class="col-sm-12 pr-sm-0">
+            <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white">
+              <span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
+              <div class="quantity">
+                <button class="dec-btn p-0"><i class="fas fa-caret-down"></i></button>
+                <input name="quantity" class="form-control border-0 shadow-0 p-0" type="text" value="1">
+                <button class="inc-btn p-0"><i class="fas fa-caret-up"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 pr-sm-0 mt-2 ">                
+            <form action="{% url 'store:ar_view' %}">
+              <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+              <button type="submit" class="btn btn-dark btn-lg btn-block h-100 d-flex align-items-center justify-content-center px-0 btn-lg shadow">View in AR &nbsp;<i class="fas fa-vr-cardboard"></i></button>  
+            </form> 
+          </div>
+          <div class="col-sm-6 pr-sm-0 mt-2">
+            <form action="{% url 'store:add-to-wishlist' %}">
+              <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+              <button type="submit" class="btn btn-dark btn-lg btn-block h-100 d-flex align-items-center justify-content-center px-0 btn-lg shadow">Add to WishList &nbsp;<i class="fas fa-heart"></i></button>
+            </form>
+          </div>
+          <div class="col-sm-12 pr-sm-0 mt-2">
+            <form action="{% url 'store:add-to-cart' %}">
+              <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+              <button type="submit" class="btn btn-primary btn-lg btn-block h-100 d-flex align-items-center justify-content-center px-0 btn-lg shadow">Add to Cart &nbsp;<i class="fas fa-dolly-flatbed"></i></button>
+            </form>
+          </div>
+        </div>
+
+        <br>
+        <ul class="list-unstyled small d-inline-block">
+          <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ml-2 text-muted">{{product.sku}}</span></li>
+          <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a class="reset-anchor ml-2" href="{% url 'store:category-products' product.category.slug %}">{{product.category}}</a></li>
+          <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Tags:</strong><a class="reset-anchor ml-2" href="#">Furniture</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- DETAILS TABS-->
+    <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+      <li class="nav-item"><a class="nav-link active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="true">Ratings & Reviews</a></li>
+    </ul>
+    <br>
+    {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    <div class="container mt-3">
+      <hr class="mt-0 pt-0">
+      <div class="row">
+        <div class="col-sm-5 mt-2">
+          <h5 class="text-uppercase font-weight-bold">Write your Reviews</h5>
+          <form class="review-form" method="post" action="{% url 'store:review-rate' %}">
+            {% csrf_token %}
+            <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+            <div class="form-group">
+              <textarea class="form-control input" name="comment" placeholder="Your Review Here..." style="height: 200px;"></textarea>
+            </div>
+            <div class="form-group">
+              <p class="text-uppercase font-weight-bold">Your Rating:</p>
+              <div class="rating-wrapper col-sm-5">
+                <input class="fas fa-star" id="star-1" name="rate" type="radio" value="5" /><label for="star-1" class="fas fa-star"></label>
+                <input class="fas fa-star" id="star-2" name="rate" type="radio" value="4" /><label for="star-2" class="fas fa-star"></label>
+                <input class="fas fa-star" id="star-3" name="rate" type="radio" value="3" /><label for="star-3" class="fas fa-star"></label>
+                <input class="fas fa-star" id="star-4" name="rate" type="radio" value="2" /><label for="star-4" class="fas fa-star"></label>
+                <input class="fas fa-star" id="star-5" name="rate" type="radio" value="1" /><label for="star-5" class="fas fa-star"></label>
+              </div>
+            </div>  
+            <button class="btn btn-primary btn-lg btn-block h-100 d-flex align-items-center justify-content-center px-0 btn-lg shadow" type="submit">Post</button>
+          </form>
+        </div>
+        
+        <div class="col-sm-7 mt-2">
+          <h4 class="text-uppercase font-weight-bold">Customer Reviews:</h4>
+          {% for review in review %}
+          <div class="review-heading">
+            <a class="text-capitalize"><i class="far fa-user mr-1"></i>{{review.user.username}}</a>
+            <a class="ml-2"><br><i class="far fa-clock mr-1"></i>{{review.created_at}}</a>
+            <div class="stars">
+              {% if review.rate > 4 %}
+                <i class="fa fa-star checked" style="float: right; color: yellow;"></i>
+              {% else %}
+                <i class="fa fa-star" style="float: right;"></i>
+              {% endif %}
+              {% if review.rate > 3 %}
+                <i class="fa fa-star checked" style="float: right; color: yellow;"></i>
+              {% else %}
+                <i class="fa fa-star" style="float: right;"></i>
+              {% endif %}
+              {% if review.rate > 2 %}
+                <i class="fa fa-star checked" style="float: right; color: yellow;"></i>
+              {% else %}
+                <i class="fa fa-star" style="float: right;"></i>
+              {% endif %}
+              {% if review.rate > 1 %}
+                <i class="fa fa-star checked" style="float: right; color: yellow;"></i>
+              {% else %}
+                <i class="fa fa-star" style="float: right;"></i>
+              {% endif %}
+              {% if review.rate > 0 %}
+                <i class="fa fa-star checked" style="float: right; color: yellow;"></i>
+              {% else %}
+                <i class="fa fa-star" style="float: right;"></i>
+              {% endif %}
+            </div>
+            <div class="review-body mt-2">
+              <p>{{review.comment}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <!-- RELATED PRODUCTS-->
+    <div>
+      <h2 class="h5 text-uppercase mt-4">Related products</h2>
+    <div class="row">
+
+      {% if related_products %}
+      {% for rp in related_products %}
+      <!-- PRODUCT-->
+      <div class="col-xl-3 col-lg-4 col-sm-6">
+        <div class="product text-center">
+          <div class="mb-3 position-relative">
+            <a class="d-block" href="{% url 'store:product-detail' rp.slug %}">
+              {% if rp.product_image %}
+                <img style="border-radius: 20px;" class="img-fluid w-100" src="{{rp.product_image.url}}" alt="{{rp.title}}">
+              {% else %}
+                <img style="border-radius: 20px;" class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="{{rp.title}}">
+              {% endif %}
+            </a>
+            <div class="product-overlay text-center d-flex justify-content-between">
+              <form action="{% url 'store:ar_view' %}">
+                <input type="hidden" name="prod_id" value="{{rp.id}}" id="product_id">
+                <li class="mb-md-1 list-inline-item m-1 px-1">
+                  <button type="submit" class="fas fa-vr-cardboard btn btn-sm btn-outline-dark"></button>
+                </li>
+              </form>
+              <form action="{% url 'store:add-to-wishlist' %}">
+                <input type="hidden" name="prod_id" value="{{rp.id}}" id="product_id">
+                <li class="mb-md-1 list-inline-item m-1 pt-2">
+                  <button type="submit" class="fas fa-heart btn btn-sm btn-outline-dark"></button>
+                </li>
+              </form>
+              <form action="{% url 'store:add-to-cart' %}">
+                <input type="hidden" name="prod_id" value="{{rp.id}}" id="product_id">
+                <li class="mb-md-1 list-inline m-0 px-3">
+                  <button type="submit" class="btn btn-sm btn-outline-dark">Add to Cart</button>
+                </li>
+              </form>
+            </div>
+          </div>
+          <h6> <a class="reset-anchor" href="{% url 'store:product-detail' rp.slug %}">{{rp.title}}</a></h6>
+          <p class="small text-muted">₹{{rp.price}}</p>
+        </div>
+      </div>
+      {% endfor %}
+
+      {% endif %}
+
+    </div>
+    
+    </div>
+  </div>
+</section>
+{% endblock content %}

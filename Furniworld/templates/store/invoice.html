@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .invoice-box table td,
+        .invoice-box table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .invoice-box table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .invoice-box table tr:hover {
+            background-color: #ddd;
+        }
+        .invoice-box table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .product-image {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        @media print {
+            header, footer, .print-button {
+                display: none;
+            }
+        }
+    </style>
+    <div class="invoice-box">
+        <table>
+            <tr>
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <td style="width: 50%;">
+                                <img src="{% static 'img/furniworld-2.png' %}" alt="FurniWorld" style="height: 85px;" class="logo-img">
+                            </td>
+                            <td style="width: 25%; text-align: right;">
+                                Order Date: {{ orderDate }}<br> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <td style="width: 50%;">
+                                Customer Name : <br><b>{{ customerName }}</b><br><br>
+                            </td>
+                            <td style="width: 50%;">
+                                Shipment Address :<br> {{ shipmentAddress }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <th>Product Image</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Amount Per Piece (₹)</th>
+                        </tr>
+                        <tr>
+                            <td><img src="{{ productImage }}" alt="{{ productName }}" style="width:150px;"></td>
+                            <td>{{ productName }}</td>
+                            <td>{{ productQuantity }}</td>
+                            <td>{{ productPrice }}</td>
+                        </tr> 
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <td>
+                                Subtotal: ₹ {{ subtotal }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Amount: ₹ {{ totalAmount }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Button for printing -->
+    <div class="print-button" style="text-align: center; margin-top: 20px;">
+        <button onclick="window.print()" class="btn btn-primary btn-lg shadow">Print Invoice</button>
+    </div>
+    <br>
+    <br>
+{% endblock content %}

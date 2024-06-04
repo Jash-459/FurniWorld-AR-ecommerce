@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+<div class="container">
+    <!-- HERO SECTION-->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="h2 text-uppercase mb-0">Wishlist</h1>
+                </div>
+                <div class="col-lg-6 text-lg-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+                            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if wishlist_products %}
+    <section class="py-5">
+        <h2 class="h5 text-uppercase mb-4">Wishlist</h2>
+
+        {% include 'partials/_messages.html' %}
+
+        <div class="row">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <!-- WISHLIST TABLE-->
+                <div class="table-responsive mb-4">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="border-0" scope="col"> <strong class="text-small text-uppercase">Product</strong></th>
+                                <th class="border-0" scope="col"> <strong class="text-small text-uppercase">Price</strong></th>
+                                <th class="border-0" scope="col"> <strong class="text-small text-uppercase">Actions</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for wishlist_product in wishlist_products %}
+                            <tr>
+                                <th class="pl-0 border-0" scope="row">
+                                    <div class="media align-items-center">
+                                        {% if wishlist_product.product.product_image %}
+                                        <a class="reset-anchor d-block animsition-link"
+                                            href="{% url 'store:product-detail' wishlist_product.product.slug %}"><img
+                                                src="{{wishlist_product.product.product_image.url}}"
+                                                alt="{{wishlist_product.product.title}}" width="70" /></a>
+                                        {% else %}
+                                        <a class="reset-anchor d-block animsition-link"
+                                            href="{% url 'store:product-detail' wishlist_product.product.slug %}"><img
+                                                src="{% static 'img/product-detail-3.jpg' %}"
+                                                alt="{{wishlist_product.product.title}}" width="70" /></a>
+                                        {% endif %}
+                                        <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link"
+                                                href="{% url 'store:product-detail' wishlist_product.product.slug %}">{{wishlist_product.product.title}}</a></strong></div>
+                                    </div>
+                                </th>
+                                <td class="align-middle border-0">
+                                    <p class="mb-0 small">₹{{wishlist_product.product.price}}</p>
+                                </td>
+                                <td class="align-middle border-0">
+                                    <a class="reset-anchor" href="{% url 'store:remove-wishlist' wishlist_product.id %}">
+                                        <i class="fas fa-trash-alt small text-muted"></i> Remove from Wishlist
+                                    </a>
+                                    <br>
+                                    <a class="reset-anchor" a href="{% url 'store:add-to-cart' %}?prod_id={{ wishlist_product.product.id }}">
+                                        <i class="fas fa-cart-plus small text-muted"></i> Add to Cart
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- WISHLIST NAV-->
+                <div class="bg-light px-4 py-3">
+                    <div class="row align-items-center text-center">
+                        <div class="col-md-6 mb-3 mb-md-0 text-md-left"><a class="btn btn-link p-0 text-dark btn-sm"
+                                href="{% url 'store:home' %}"><i class="fas fa-long-arrow-alt-left mr-2"> </i>Continue
+                                shopping</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% else %}
+
+    <div class="text-center py-5">
+        <h3 class="mb-3">Your wishlist is empty.</h3>
+        <a href="{% url 'store:home' %}"><i class="fas fa-long-arrow-alt-left mr-2"> </i>Continue shopping</a>
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock content %}

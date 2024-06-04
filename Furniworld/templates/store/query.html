@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <h2><center>Have a Question or Need Assistance? Let's Connect!</center></h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <b><label for="name">Name:</label></b>
+                            <input type="text" name="name" id="name" class="form-control" required placeholder="Full Name">
+                        </div>
+                        <div class="col">
+                            <b><label for="email">Email:</label></b>
+                            <input type="email" name="email" id="email" class="form-control" required placeholder="Email ID">
+                        </div>
+                    </div>
+                </div>
+
+                <b><label for="query">Query:</label></b>
+                <textarea name="query" id="query" rows="4" class="form-control" required placeholder="Enter your Query/Complaints here..."></textarea>
+                <br>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg shadow">Submit</button>
+                </div>
+            </form>
+
+            <br>
+            <br>
+         
+        </div>
+    </div>
+    <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe
+                src="https://maps.google.com/maps?q=FurniWorld&amp;t=k&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
+                frameborder="1"
+                scrolling="no"
+                style="width: 100%; height: 300px;"
+            ></iframe>
+        </div>  
+    </div>
+</div>
+
+{% endblock content %}

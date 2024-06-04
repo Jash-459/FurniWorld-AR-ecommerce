@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+    <div style="display: flex; justify-content: center; align-items: center;">
+        
+        <a class="d-block" href="{% static 'img/product-detail-1.jpg' %}" data-lightbox="product" title="{{product.title}}"><img class="img-fluid" src="{% static 'img/product-detail-1.jpg' %}" alt="{{product.title}}"></a>
+  
+    </div>
+    {% endblock content %}

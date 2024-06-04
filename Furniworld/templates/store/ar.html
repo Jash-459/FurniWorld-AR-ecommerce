@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative; /* Make the body a positioning context */
+    }
+    #container {
+      position: relative; /* Ensure the container is a positioning context */
+    }
+    model-viewer {
+      width: 90vw;
+      height: 100vh;
+      position: absolute; /* Position the model absolutely */
+      top: 50%; /* Center vertically */
+      left: 50%; /* Center horizontally */
+      transform: translate(-50%, -50%); /* Center the model */
+      z-index: 1;
+    }
+    #webcam {
+      width: 90vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <video id="webcam" autoplay playsinline></video>
+    <model-viewer id="modelViewer" ar camera-controls ar-modes="webxr" autoactivate>
+    </model-viewer>
+  </div>
+
+  <script>
+    async function setupWebcam() {
+      const video = document.getElementById('webcam');
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        console.error('Error accessing webcam:', err);
+      }
+    }
+
+    setupWebcam();
+
+    // Fetch the model URL and set it dynamically
+    const productModelUrl = "{{ product.t_model.url }}"; // Assuming you have the URL available
+const modelViewer = document.getElementById('modelViewer');
+
+if (productModelUrl) {
+  modelViewer.setAttribute('src', productModelUrl);
+} else {
+  // If the URL is not available, hide the model viewer and show a message
+  modelViewer.style.display = 'none';
+  const errorMessage = document.createElement('p');
+  errorMessage.textContent = 'AR view not available for this product.';
+  modelViewer.parentElement.appendChild(errorMessage);
+  console.error('Model URL not available.');
+}
+
+  </script>
+</body>
+</html>

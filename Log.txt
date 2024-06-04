@@ -1,0 +1,44 @@
+V1:
+
+it consists of all basic functionalities such as 
+
+Creating of Home page, All Products page, Cart Page, Profile Page, Orders Page, Login Page, New User Registration Page, Change Password Page, forgot password page(functional only from CLI)
+ 
+Logo
+Categories Drop Down
+Selecting Categories
+Login
+New User Registration
+Adding products to cart
+Viewing Cart
+My Account Drop Down
+View Profile
+Cart
+Orders
+Password Change
+Adding a new address from profile Section
+Selecting an address before paying for COD
+Added products on Django Server
+Added options to sort and Filter (not functional)
+Deleting items from Cart
+Adding quantity
+Subtracting Quantity
+
+
+V2:
+Adding more than one address from check out page
+Calculating amount
+Viewing Invoice
+showing Status of the order
+Asking Query
+Replying with Automated Email
+Location on GMaps
+Search for Items
+
+V3:
+Payments
+Admin Page
+Add to cart from Wishlist
+
+
+

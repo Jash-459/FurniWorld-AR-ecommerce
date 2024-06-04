@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <!-- HERO SECTION-->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="h2 text-uppercase mb-0">Shop - {{category.title}}</h1>
+                </div>
+                <div class="col-lg-6 text-lg-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+                            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'store:all-categories' %}">Category</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{category.title}}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container p-0">
+            <div class="row">
+                <!-- SHOP SIDEBAR-->
+                <div class="col-lg-3 order-2 order-lg-1">
+                    <h5 class="text-uppercase mb-4">Categories</h5>
+
+                    {% if categories %}
+                        {% for cat in categories %}
+                            <a href="{% url 'store:category-products' cat.slug %}">
+                                <div class="py-2 px-4 {% if category == cat %}bg-dark text-white {% else %}bg-light{% endif %} mb-3">
+                                    <strong class="small text font-weight-bold">{{cat.title}}</strong>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+
+                    <h6 class="text-uppercase mb-4">Price range</h6>
+<form method="GET" action="{% url 'store:category-products' category.slug %}">
+    {% for price_range, label in form.PRICE_CHOICES %}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="price_range" id="price_range_{{ forloop.counter }}" value="{{ price_range }}">
+            <label class="form-check-label" for="price_range_{{ forloop.counter }}">
+                {{ label }}
+            </label>
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mt-2 btn-lg shadow">Filter</button>
+</form>      
+              
+                </div>
+                <!-- SHOP LISTING-->
+                <div class="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-lg-6 mb-2 mb-lg-0">
+                            <p class="text-small text-muted mb-0">Showing 1–{{ products|length }} of {{ total_results }} results</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-inline d-flex align-items-center justify-content-lg-end mb-0">
+                                <li class="list-inline-item">
+                                    <select class="selectpicker ml-auto" name="sorting" data-width="200" data-style="bs-select-form-control" data-title="Default sorting">
+                                        <option value="default">Default sorting</option>
+                                        <option value="popularity">Popularity</option>
+                                        <option value="low-high">Price: Low to High</option>
+                                        <option value="high-low">Price: High to Low</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        {% if products %}
+                            {% for product in products %}
+                                <!-- PRODUCT-->
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="product text-center">
+                                        <div class="mb-3 position-relative">
+                                            <a class="d-block" href="{% url 'store:product-detail' product.slug %}">
+                                                {% if product.product_image %}
+                                                    <img style="border-radius: 20px;" class="img-fluid w-100" src="{{product.product_image.url}}" alt="{{product.title}}">
+                                                {% else %}
+                                                    <img style="border-radius: 20px;" class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="{{product.title}}">
+                                                {% endif %}
+                                            </a>
+                                            <div class="product-overlay text-center d-flex justify-content-between hover-text">  
+                                                 <!-- Inside your form -->
+                                                <form action="{% url 'store:ar_view' %}">
+                                                    <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+                                                    <li class="mb-md-1 list-inline-item m-1 px-1">
+                                                        <!-- Add the title attribute with the tooltip text -->
+                                                        <button type="submit" class="fas fa-vr-cardboard btn btn-sm btn-outline-dark btn-lg shadow" title="View in Augmented Reality"></button>
+                                                    </li>
+                                                </form>
+                                                <form action="{% url 'store:add-to-wishlist' %}">
+                                                    <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+                                                    <li class="mb-md-1 list-inline-item m-1 pt-2">
+                                                        <!-- Add the title attribute with the tooltip text -->
+                                                        <button type="submit" class="fas fa-heart btn btn-sm btn-outline-dark btn-lg shadow" title="Add to Wishlist"></button>
+                                                    </li>
+                                                </form>
+
+                                                <form action="{% url 'store:add-to-cart' %}">
+                                                    <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+                                                    <li class="mb-md-1 list-inline m-0 px-3">
+                                                        <button type="submit" class="btn btn-sm btn-outline-dark btn-lg shadow">Add to Cart</button>
+                                                    </li>  
+                                                </form>                                                    
+                                            </div>    
+                                        </div>
+                                        <h6> <a class="reset-anchor" href="{% url 'store:product-detail' product.slug %}">{{product.title}}</a></h6>
+                                        <p class="small text-muted">₹{{product.price}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <!-- PAGINATION-->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center justify-content-lg-end">
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

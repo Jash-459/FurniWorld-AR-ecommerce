@@ -1,0 +1,12 @@
+asgiref
+dj-database-url
+Django
+django-on-heroku
+psycopg2-binary
+pytz
+sqlparse
+tzdata
+whitenoise
+django-widget-tweaks
+xhtml2pdf
+stripe
