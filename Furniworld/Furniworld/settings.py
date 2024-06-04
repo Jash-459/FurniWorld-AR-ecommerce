@@ -135,7 +135,7 @@ EMAIL_HOST_PASSWORD = 'evtbfiylszctvsog'
 
 #stripe payments
 STRIPE_PUBLIC_KEY = 'pk_test_51NwHbfSDH85chfNT8035GF2V7rVAwlIs6hIU7Sbz38Ez9kXLKENlM2lMKZpv98xdpPSV5tAxFGVyywan1p2vNfJ2000PaQOugj'
-STRIPE_SECRET_KEY = 'sk_test_51NwHbfSDH85chfNTKKs5Q6y5gmEtkNQ675ahISVYa6njZConcFQXmyDGer1xSCNAhvpZQUU0NZRcoIn9FPWbc5vE00yTClmUdI'
+STRIPE_SECRET_KEY = 'your api_key'
 STRIPE_WEBHOOK_SECRET = 'whsec_f25a8ffdd744411c09247565bde31d90cc43e8b4430186d5d8649da9f318c585'
 # Configure Django App for Heroku.
 import django_on_heroku
