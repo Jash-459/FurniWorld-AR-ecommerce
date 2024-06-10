@@ -6,11 +6,11 @@ Project Overview
 
 FurniWorld provides a user-friendly platform to browse and purchase furniture online. It empowers users with a groundbreaking AR feature that allows them to virtually place furniture in their own space using their smartphone or tablet camera. This innovative integration fosters informed furniture choices that perfectly complement user's décor.
 
-Tech Stack
+<h5>Tech Stack
 
 Backend: Django (Python framework) 
 Frontend: Javascript, HTML, CSS 
-AR Integration: AR.js, Model-Viewer, Three.js
+AR Integration: AR.js, Model-Viewer, Three.js</h5>
 
 <h5>Installation
   
