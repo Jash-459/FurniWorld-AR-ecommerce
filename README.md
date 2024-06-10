@@ -8,7 +8,9 @@ FurniWorld provides a user-friendly platform to browse and purchase furniture on
 
 Tech Stack
 
-Backend: Django (Python framework) Frontend: Javascript, HTML, CSS AR Integration: AR.js, Model-Viewer, Three.js
+Backend: Django (Python framework) 
+Frontend: Javascript, HTML, CSS 
+AR Integration: AR.js, Model-Viewer, Three.js
 
 <h5>Installation
   
